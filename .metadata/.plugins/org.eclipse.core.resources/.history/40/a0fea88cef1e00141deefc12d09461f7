@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res/com.example.localapp"
+    android:id="@+id/sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    sothree:panelHeight="68dp"
+    sothree:shadowHeight="4dp">
+    
+  <FrameLayout
+    android:id="@+id/camera_preview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1"
+    >
+
+  </FrameLayout>
+  <FrameLayout
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_weight="1"
+	android:background="#FFFFFF"
+    >
+    	<RelativeLayout
+			android:layout_width="fill_parent"
+			android:layout_height="68dp"
+			android:layout_weight="1"
+			android:background="#000000"
+    	>
+    		<ImageView
+          		android:id="@+id/smallImage"
+          		android:layout_width="68dp"
+          		android:layout_height="fill_parent"
+          		android:layout_weight="1"
+          		android:layout_alignParentLeft="true"
+          		android:padding="0dip"
+          		android:scaleType="fitStart"
+          		
+          		android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+    		<ImageView
+          		android:id="@+id/postEvent"
+          		android:layout_width="68dp"
+          		android:layout_height="fill_parent"
+          		android:layout_weight="4"
+          		android:padding="0dip"
+          		android:layout_alignParentRight="true"
+          		android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+    		<ImageView
+          		android:id="@+id/checkIn"
+          		android:layout_width="68dp"
+          		android:layout_height="fill_parent"
+          		android:layout_weight="4"
+          		android:padding="0dip"
+          		android:layout_toLeftOf="@id/postEvent"
+          		android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+    		<TextView
+    		    android:id="@+id/locationView"
+          		android:layout_width="fill_parent"
+          		android:layout_height="fill_parent"
+          		android:layout_toRightOf="@id/smallImage"
+          		android:text="Location"/>
+			</RelativeLayout>
+  </FrameLayout>
+  
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+</FrameLayout>
