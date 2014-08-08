@@ -3,8 +3,6 @@
 	<name>LocalBot</name>
 	<comment></comment>
 	<projects>
-		<project>android-support-v7-appcompat</project>
-		<project>library</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

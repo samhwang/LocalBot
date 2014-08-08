@@ -215,30 +215,31 @@
     </style>
 
     <style name="TextAppearance.AppCompat.SearchResult.Subtitle"
-           parent="TextAppearance.AppCompa  </style>
-
-    <style name="Widget.AppCompat.ActionBar.TabText"
-           parent="Widget.AppCompat.Base.ActionBar.TabText">
+           parent="TextAppearance.AppCompat.Base.SearchResult.Subtitle">
     </style>
 
-    <style name="Widget.AppCompat.Light.ActionBar.TabText"
-           parent="Widget.AppCompat.Light.Base.ActionBar.TabText">
+    <style name="TextAppearance.AppCompat.Light.SearchResult.Title"
+           parent="TextAppearance.AppCompat.Light.Base.SearchResult.Title">
     </style>
 
-    <style name="Widget.AppCompat.Light.ActionBar.TabText.Inverse"
-           parent="Widget.AppCompat.Light.Base.ActionBar.TabText.Inverse">
+    <style name="TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+           parent="TextAppearance.AppCompat.Light.Base.SearchResult.Subtitle">
     </style>
 
-    <style name="TextAppearance.AppCompat.Widget.ActionBar.Menu"
-           parent="TextAppearance.AppCompat.Widget.Base.ActionBar.Menu">
+    <style name="Widget.AppCompat.AutoCompleteTextView"
+           parent="Widget.AppCompat.Base.AutoCompleteTextView">
     </style>
 
-    <style name="Widget.AppCompat.ActionMode" parent="Widget.AppCompat.Base.ActionMode">
+    <style name="Widget.AppCompat.Light.AutoCompleteTextView"
+           parent="Widget.AppCompat.Light.Base.AutoCompleteTextView">
     </style>
 
-    <style name="Widget.AppCompat.Light.ActionMode.Inverse"
-           parent="Widget.AppCompat.Light.Base.ActionMode.Inverse">
+    <style name="Widget.AppCompat.ActivityChooserView"
+           parent="Widget.AppCompat.Base.ActivityChooserView">
     </style>
 
-    <style name="TextAppearance.AppCompat.Widget.ActionMode.Title"
-           parent="TextAppearance.Ap
+    <style name="Widget.AppCompat.Light.ActivityChooserView"
+           parent="Widget.AppCompat.Light.Base.ActivityChooserView">
+    </style>
+
+</resources>

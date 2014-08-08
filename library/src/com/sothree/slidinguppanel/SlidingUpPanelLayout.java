@@ -1103,125 +1103,111 @@ public class SlidingUpPanelLayout extends ViewGroup {
     }
 
     @Override
-top = Math.max(mTmpRect.top, mSlideableView.getBottom());
+    protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
+        return p instanceof MarginLayoutParams
+                ? new LayoutParams((MarginLayoutParams) p)
+                : new LayoutParams(p);
+    }
+
+    @Override
+    protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
+        return p instanceof LayoutParams && super.checkLayoutParams(p);
+    }
+
+    @Override
+    public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new LayoutParams(getContext(), attrs);
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+
+        SavedState ss = new SavedState(superState);
+        ss.mSlideState = mSlideState;
+
+        return ss;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+        mSlideState = ss.mSlideState;
+    }
+
+    private class DragHelperCallback extends ViewDragHelper.Callback {
+
+        @Override
+        public boolean tryCaptureView(View child, int pointerId) {
+            if (mIsUnableToDrag) {
+                return false;
+            }
+
+            return child == mSlideableView;
+        }
+
+        @Override
+        public void onViewDragStateChanged(int state) {
+            if (mDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE) {
+                mSlideOffset = computeSlideOffset(mSlideableView.getTop());
+
+                if (mSlideOffset == 1) {
+                    if (mSlideState != SlideState.EXPANDED) {
+                        updateObscuredViewVisibility();
+                        mSlideState = SlideState.EXPANDED;
+                        dispatchOnPanelExpanded(mSlideableView);
+                    }
+                } else if (mSlideOffset == 0) {
+                    if (mSlideState != SlideState.COLLAPSED) {
+                        mSlideState = SlideState.COLLAPSED;
+                        dispatchOnPanelCollapsed(mSlideableView);
+                    }
+                } else if (mSlideOffset < 0) {
+                    mSlideState = SlideState.HIDDEN;
+                    mSlideableView.setVisibility(View.GONE);
+                    dispatchOnPanelHidden(mSlideableView);
+                } else if (mSlideState != SlideState.ANCHORED) {
+                    updateObscuredViewVisibility();
+                    mSlideState = SlideState.ANCHORED;
+                    dispatchOnPanelAnchored(mSlideableView);
                 }
-                canvas.clipRect(mTmpRect);
             }
         }
 
-        result = super.drawChild(canvas, child, drawingTime);
-        canvas.restoreToCount(save);
-
-        if (mCoveredFadeColor != 0 && mSlideOffset > 0) {
-            final int baseAlpha = (mCoveredFadeColor & 0xff000000) >>> 24;
-            final int imag = (int) (baseAlpha * mSlideOffset);
-            final int color = imag << 24 | (mCoveredFadeColor & 0xffffff);
-            mCoveredFadePaint.setColor(color);
-            canvas.drawRect(mTmpRect, mCoveredFadePaint);
-        }
-
-        return result;
-    }
-
-    /**
-     * Smoothly animate mDraggingPane to the target X position within its range.
-     *
-     * @param slideOffset position to animate to
-     * @param velocity initial velocity in case of fling, or 0.
-     */
-    boolean smoothSlideTo(float slideOffset, int velocity) {
-        if (!isSlidingEnabled()) {
-            // Nothing to do.
-            return false;
-        }
-
-        int panelTop = computePanelTopPosition(slideOffset);
-        if (mDragHelper.smoothSlideViewTo(mSlideableView, mSlideableView.getLeft(), panelTop)) {
+        @Override
+        public void onViewCaptured(View capturedChild, int activePointerId) {
             setAllChildrenVisible();
-            ViewCompat.postInvalidateOnAnimation(this);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void computeScroll() {
-        if (mDragHelper != null && mDragHelper.continueSettling(true)) {
-            if (!isSlidingEnabled()) {
-                mDragHelper.abort();
-                return;
-            }
-
-            ViewCompat.postInvalidateOnAnimation(this);
-        }
-    }
-
-    @Override
-    public void draw(Canvas c) {
-        super.draw(c);
-
-        if (!isSlidingEnabled()) {
-            // No need to draw a shadow if we don't have one.
-            return;
         }
 
-        final int right = mSlideableView.getRight();
-        final int top;
-        final int bottom;
-        if (mIsSlidingUp) {
-            top = mSlideableView.getTop() - mShadowHeight;
-            bottom = mSlideableView.getTop();
-        } else {
-            top = mSlideableView.getBottom();
-            bottom = mSlideableView.getBottom() + mShadowHeight;
+        @Override
+        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+            onPanelDragged(top);
+            invalidate();
         }
-        final int left = mSlideableView.getLeft();
 
-        if (mShadowDrawable != null) {
-            mShadowDrawable.setBounds(left, top, right, bottom);
-            mShadowDrawable.draw(c);
-        }
-    }
+        @Override
+        public void onViewReleased(View releasedChild, float xvel, float yvel) {
+            int target = 0;
 
-    /**
-     * Tests scrollability within child views of v given a delta of dx.
-     *
-     * @param v View to test for horizontal scrollability
-     * @param checkV Whether the view v passed should itself be checked for scrollability (true),
-     *               or just its children (false).
-     * @param dx Delta scrolled in pixels
-     * @param x X coordinate of the active touch point
-     * @param y Y coordinate of the active touch point
-     * @return true if child views of v can be scrolled by delta of dx.
-     */
-    protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-        if (v instanceof ViewGroup) {
-            final ViewGroup group = (ViewGroup) v;
-            final int scrollX = v.getScrollX();
-            final int scrollY = v.getScrollY();
-            final int count = group.getChildCount();
-            // Count backwards - let topmost views consume scroll distance first.
-            for (int i = count - 1; i >= 0; i--) {
-                final View child = group.getChildAt(i);
-                if (x + scrollX >= child.getLeft() && x + scrollX < child.getRight() &&
-                        y + scrollY >= child.getTop() && y + scrollY < child.getBottom() &&
-                        canScroll(child, true, dx, x + scrollX - child.getLeft(),
-                                y + scrollY - child.getTop())) {
-                    return true;
-                }
-            }
-        }
-        return checkV && ViewCompat.canScrollHorizontally(v, -dx);
-    }
+            // direction is always positive if we are sliding in the expanded direction
+            float direction = mIsSlidingUp ? -yvel : yvel;
 
-
-    @Override
-    protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
-        return new LayoutParams();
-    }
-
-    @Override
-Offset >= mAnchorPoint / 2) {
+            if (direction > 0) {
+                // swipe up -> expand
+                target = computePanelTopPosition(1.0f);
+            } else if (direction < 0) {
+                // swipe down -> collapse
+                target = computePanelTopPosition(0.0f);
+            } else if (mAnchorPoint != 1 && mSlideOffset >= (1.f + mAnchorPoint) / 2) {
+                // zero velocity, and far enough from anchor point => expand to the top
+                target = computePanelTopPosition(1.0f);
+            } else if (mAnchorPoint == 1 && mSlideOffset >= 0.5f) {
+                // zero velocity, and far enough from anchor point => expand to the top
+                target = computePanelTopPosition(1.0f);
+            } else if (mAnchorPoint != 1 && mSlideOffset >= mAnchorPoint) {
+                target = computePanelTopPosition(mAnchorPoint);
+            } else if (mAnchorPoint != 1 && mSlideOffset >= mAnchorPoint / 2) {
                 target = computePanelTopPosition(mAnchorPoint);
             } else {
                 // settle at the bottom
