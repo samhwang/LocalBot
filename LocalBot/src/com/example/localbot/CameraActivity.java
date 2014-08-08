@@ -8,6 +8,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpEntity;
@@ -58,7 +60,8 @@ public class CameraActivity extends Activity {
     private Camera mCamera;
     private CameraPreview mPreview;
     LocationManager locationManager;
-    
+    int bubbleCount = 0;
+    Activity context_activity = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,21 +78,7 @@ public class CameraActivity extends Activity {
         // Create our Preview view and set it as the content of our activity.
         mPreview = new CameraPreview(this, mCamera);
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(mPreview);
-        
-        // Add bubble
-        // This is demo, will remove from onCreate later
-        TextBubble text_bub = new TextBubble(this, 1, "Melbourne Central", "300m",10,10);
-        text_bub.setOnClickListener(new OnClickListener(){
-        	public void onClick(View v) { //Function for Onclick event
-        		Log.i("TAG", "The index is 1");
-        		TextView locationView = (TextView) findViewById(R.id.locationView);
-        		locationView.setText("Melbourne Central");
-        		// Update sliding panel
-        	}
-        });
-        preview.addView(text_bub);
-        
+        preview.addView(mPreview);        
     }
     
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -145,6 +134,14 @@ public class CameraActivity extends Activity {
     }
     LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
+        	FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        	// Remove bubble
+        	for (int i = 0; i<bubbleCount;i++){
+        		TextBubble text_bub = (TextBubble) findViewById(i);
+        		preview.removeView(text_bub);
+        	}
+        	bubbleCount = 0;
+        	
           // Called when a new location is found by the network location provider.
         	String xml = ""; 
         	String locationProvider = LocationManager.NETWORK_PROVIDER;
@@ -166,22 +163,63 @@ public class CameraActivity extends Activity {
 			} catch (ExecutionException e) {
 				return;
 			}
-        	 Log.i("LOCATION", xml);
         	 
             // Process xml
-        	 InputStream in = new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+        	 InputStream in = new ByteArrayInputStream(xml.getBytes());
         	 XmlPullParser parser = Xml.newPullParser();
+        	 String title = null;
+        	 String summary = null;
+        	 String link = null;
+        	 String ns = "";
+        	 String text = "";
+        	 LocationData loc = new LocationData();
+        	 List<LocationData> locationList = new ArrayList<LocationData>();
         	 try {
 				parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
 				parser.setInput(in, null);
 				parser.nextTag();
-			} catch (XmlPullParserException e) {
+				int event;
+				event = parser.getEventType();
+		         while (event != XmlPullParser.END_DOCUMENT) {
+		            String name=parser.getName();
+		            switch (event){
+		               case XmlPullParser.START_TAG:
+		               break;
+		               case XmlPullParser.TEXT:
+		               text = parser.getText();
+		               break;
+
+		               case XmlPullParser.END_TAG:
+		                  if(name.equals("name")){
+		                     loc = new LocationData();
+		                     loc.name = text;
+		                  }
+		                  else if(name.equals("lat")){ 	
+		                	  loc.lat = Double.parseDouble(text);
+		                  }
+		                  else if(name.equals("lng")){ 	
+		                	  loc.lng = Double.parseDouble(text);
+		                  }
+		                  else if(name.equals("place_id")){ 	
+		                	  loc.place_id = text;
+		                	  locationList.add(loc);
+		                  }
+		                  else{
+		                  }
+		                  break;
+		                  }		 
+		                  event = parser.next(); 
+
+		              }
+        	 } catch (XmlPullParserException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-             
-        	
+            Log.i("XML PARSE", Integer.toString(locationList.size()));
+        	 
+        	 
+        	//        
         	// Search event from FB
         	
         	
@@ -189,6 +227,21 @@ public class CameraActivity extends Activity {
         	
         	// Remove old bubbles
         	// Update bubbles
+            for (LocationData lo:locationList)
+            {
+            	final String name = lo.name;
+            	TextBubble text_bub = new TextBubble(context_activity, bubbleCount, lo.name, "300m",bubbleCount*50,bubbleCount*50);
+                text_bub.setOnClickListener(new OnClickListener(){
+                	public void onClick(View v) { //Function for Onclick event
+                		// Update sliding panel
+                		TextView locationView = (TextView) findViewById(R.id.locationView);
+                		locationView.setText(name);
+                		
+                	}
+                });
+                preview.addView(text_bub);
+                bubbleCount++;
+            }
         	
         	
         	
@@ -200,7 +253,8 @@ public class CameraActivity extends Activity {
 
         public void onProviderDisabled(String provider) {}
 
-      };    
+      };
 }
+
 
 
