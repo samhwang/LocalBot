@@ -1,0 +1,130 @@
+{ "results": [
+	{
+        "Latitude": -37.81016,
+        "LocationID": "001",
+        "Longitude": 144.9634,
+        "createdAt": "2014-08-08T22:57:51.685Z",
+        "objectId": "cSuvxU1CzB",
+        "updatedAt": "2014-08-08T22:58:47.681Z"
+    },
+	{
+        "Latitude": -37.81796,
+        "LocationID": "002",
+        "Longitude": 144.96751,
+        "createdAt": "2014-08-08T22:58:59.049Z",
+        "objectId": "iFZECYvzR8",
+        "updatedAt": "2014-08-08T23:00:34.260Z"
+    },
+	{
+        "Latitude": -37.814184,
+        "LocationID": "003",
+        "Longitude": 144.95184,
+        "createdAt": "2014-08-08T23:00:45.363Z",
+        "objectId": "c4yxUYPTHW",
+        "updatedAt": "2014-08-08T23:02:47.419Z"
+    },
+	{
+        "Latitude": -37.818785,
+        "LocationID": "004",
+        "Longitude": 144.957047,
+        "createdAt": "2014-08-09T00:44:09.949Z",
+        "objectId": "MUpdCvFXji",
+        "updatedAt": "2014-08-09T00:44:18.736Z"
+    },
+	{
+        "Latitude": -37.818827,
+        "LocationID": "005",
+        "Longitude": 144.957076,
+        "createdAt": "2014-08-09T00:46:55.180Z",
+        "objectId": "wsPeHJ9bgx",
+        "updatedAt": "2014-08-09T00:47:20.704Z"
+    },
+	{
+        "Latitude": -37.818782,
+        "LocationID": "006",
+        "Longitude": 144.957007,
+        "createdAt": "2014-08-09T00:48:30.017Z",
+        "objectId": "uGzQ2V5BcE",
+        "updatedAt": "2014-08-09T00:50:37.431Z"
+    },
+	{
+        "Latitude": -37.81891,
+        "LocationID": "007",
+        "Longitude": 144.957063,
+        "createdAt": "2014-08-09T00:52:09.250Z",
+        "objectId": "WZJkcit9k4",
+        "updatedAt": "2014-08-09T00:53:13.526Z"
+    },
+	{
+        "Latitude": -37.793228,
+        "LocationID": "008",
+        "Longitude": 144.943552,
+        "createdAt": "2014-08-09T00:54:02.599Z",
+        "objectId": "HAiSPwJ376",
+        "updatedAt": "2014-08-09T00:55:09.550Z"
+    },
+	{
+        "Latitude": -37.794789,
+        "LocationID": "009",
+        "Longitude": 144.941708,
+        "createdAt": "2014-08-09T00:54:05.227Z",
+        "objectId": "Qn7e0D96my",
+        "updatedAt": "2014-08-09T00:56:32.916Z"
+    },
+	{
+        "Latitude": -37.795129,
+        "LocationID": "011",
+        "Longitude": 144.941595,
+        "createdAt": "2014-08-09T00:57:40.590Z",
+        "objectId": "hJDo8AUECy",
+        "updatedAt": "2014-08-09T00:57:49.120Z"
+    },
+	{
+        "Latitude": -37.793793,
+        "LocationID": "010",
+        "Longitude": 144.948936,
+        "createdAt": "2014-08-09T00:54:07.590Z",
+        "objectId": "bnCZflqADN",
+        "updatedAt": "2014-08-09T00:59:09.256Z"
+    },
+	{
+        "Latitude": -37.793219,
+        "LocationID": "012",
+        "Longitude": 144.944052,
+        "createdAt": "2014-08-09T01:01:44.211Z",
+        "objectId": "Fk49FkOmxc",
+        "updatedAt": "2014-08-09T01:01:50.663Z"
+    },
+	{
+        "Latitude": -37.793114,
+        "LocationID": "013",
+        "Longitude": 144.942536,
+        "createdAt": "2014-08-09T01:01:53.733Z",
+        "objectId": "NGzas4sfnj",
+        "updatedAt": "2014-08-09T01:02:33.897Z"
+    },
+	{
+        "Latitude": -37.792942,
+        "LocationID": "014",
+        "Longitude": 144.943423,
+        "createdAt": "2014-08-09T01:03:19.287Z",
+        "objectId": "7AuiKD3Gqk",
+        "updatedAt": "2014-08-09T01:03:25.561Z"
+    },
+	{
+        "Latitude": -37.793187,
+        "LocationID": "016",
+        "Longitude": 144.943721,
+        "createdAt": "2014-08-09T01:05:16.662Z",
+        "objectId": "wzcWiOeIPR",
+        "updatedAt": "2014-08-09T01:05:40.829Z"
+    },
+	{
+        "Latitude": -37.793645,
+        "LocationID": "015",
+        "Longitude": 144.943486,
+        "createdAt": "2014-08-09T01:05:14.806Z",
+        "objectId": "cqBRLhgDEP",
+        "updatedAt": "2014-08-09T01:06:04.226Z"
+    }
+] }
